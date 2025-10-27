@@ -23,6 +23,7 @@ body {
   background: var(--background);
   font-family: var(--font-mochibop), 'Courier New', monospace;
   overflow: hidden;
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/arrow.cur'), auto;
 }
 
 /* Custom scrollbar */
@@ -62,4 +63,59 @@ body {
 
 .cursor-blink {
   animation: blink 1s infinite;
+}
+
+/* Custom Windows 11 Dark cursors */
+*, *::before, *::after {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/arrow.cur'), auto;
+}
+
+button, a, [role="button"], .cursor-pointer {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/hand.cur'), pointer !important;
+}
+
+input[type="text"], input[type="password"], input[type="email"],
+textarea, [contenteditable="true"] {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/ibeam.cur'), text !important;
+}
+
+.cursor-move, [draggable="true"] {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/arrow.cur'), grab !important;
+}
+
+.cursor-grabbing {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/arrow.cur'), grabbing !important;
+}
+
+.cursor-wait, .loading {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/wait.ani'), wait !important;
+}
+
+.cursor-not-allowed, [disabled] {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/no.cur'), not-allowed !important;
+}
+
+.cursor-help {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/help.cur'), help !important;
+}
+
+.cursor-crosshair {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/crosshair.cur'), crosshair !important;
+}
+
+/* Resize cursors */
+.cursor-resize-ns {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/sizens.cur'), ns-resize !important;
+}
+
+.cursor-resize-ew {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/sizewe.cur'), ew-resize !important;
+}
+
+.cursor-resize-nesw {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/sizenesw.cur'), nesw-resize !important;
+}
+
+.cursor-resize-nwse {
+  cursor: url('/cursors/windows_11_cursors_concept_by_jepricreations_densjkc/dark/sizenwse.cur'), nwse-resize !important;
 }

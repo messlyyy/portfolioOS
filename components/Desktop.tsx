@@ -7,6 +7,7 @@ import Window from './Window';
 import Taskbar from './Taskbar';
 import MenuBar from './MenuBar';
 import AboutModal from './AboutModal';
+import WeatherWidget from './WeatherWidget';
 import { FileItem, WindowState } from '@/types';
 import Image from 'next/image';
 
@@ -19,24 +20,24 @@ const fileSystem: FileItem[] = [
     imagePath: '/images/txt.png',
     content: `=== README ===
 
-Bienvenido a mi Portfolio OS!
+Welcome to my Portfolio OS!
 
-Este es un portfolio interactivo disenado como un sistema operativo.
+This is an interactive portfolio designed as an operating system.
 
-COMO NAVEGAR:
-- Haz doble click en los iconos para abrir archivos y carpetas
-- Arrastra las ventanas para moverlas
-- Usa los botones de la barra superior para cerrar, minimizar o maximizar
-- Revisa la carpeta Proyectos para ver mis trabajos
-- Mira la carpeta Gustos para conocerme mejor
-- Abre mi CV para informacion profesional
+HOW TO NAVIGATE:
+- Double click on icons to open files and folders
+- Drag windows to move them
+- Use the buttons in the top bar to close, minimize or maximize
+- Check the Projects folder to see my work
+- Look at the Hobbies folder to get to know me better
+- Open my CV for professional information
 
-CONTACTO:
-- Email: [tu@email.com]
-- LinkedIn: [Tu LinkedIn]
-- GitHub: [Tu GitHub]
+CONTACT:
+- Email: [your@email.com]
+- LinkedIn: [Your LinkedIn]
+- GitHub: [Your GitHub]
 
-Gracias por visitar!
+Thanks for visiting!
 `,
   },
   {
@@ -46,176 +47,176 @@ Gracias por visitar!
     imagePath: '/images/cv.png',
     content: `=== CURRICULUM VITAE ===
 
-Nombre: [Tu Nombre]
-Email: [tu@email.com]
-Telefono: [Tu Telefono]
-LinkedIn: [Tu LinkedIn]
-GitHub: [Tu GitHub]
+Name: [Your Name]
+Email: [your@email.com]
+Phone: [Your Phone]
+LinkedIn: [Your LinkedIn]
+GitHub: [Your GitHub]
 
-=== RESUMEN PROFESIONAL ===
-[Descripcion breve de tu perfil profesional]
+=== PROFESSIONAL SUMMARY ===
+[Brief description of your professional profile]
 
-=== EXPERIENCIA ===
-[Empresa 1] - [Puesto] (Fecha - Fecha)
-- [Logro o responsabilidad 1]
-- [Logro o responsabilidad 2]
+=== EXPERIENCE ===
+[Company 1] - [Position] (Date - Date)
+- [Achievement or responsibility 1]
+- [Achievement or responsibility 2]
 
-[Empresa 2] - [Puesto] (Fecha - Fecha)
-- [Logro o responsabilidad 1]
-- [Logro o responsabilidad 2]
+[Company 2] - [Position] (Date - Date)
+- [Achievement or responsibility 1]
+- [Achievement or responsibility 2]
 
-=== EDUCACION ===
-[Universidad/Institucion] - [Titulo] (Ano)
+=== EDUCATION ===
+[University/Institution] - [Degree] (Year)
 
-=== HABILIDADES ===
-- Lenguajes: JavaScript, TypeScript, Python, etc.
+=== SKILLS ===
+- Languages: JavaScript, TypeScript, Python, etc.
 - Frameworks: React, Next.js, Node.js, etc.
-- Herramientas: Git, Docker, AWS, etc.
+- Tools: Git, Docker, AWS, etc.
 
-=== IDIOMAS ===
-- Espanol: Nativo
-- Ingles: [Nivel]
+=== LANGUAGES ===
+- Spanish: Native
+- English: [Level]
 `,
   },
   {
     id: 'proyectos',
-    name: 'Proyectos',
+    name: 'Projects',
     type: 'folder',
     imagePath: '/icons/folder-projects.png', // PLACEHOLDER
     children: [
       {
         id: 'proyecto1',
-        name: 'Proyecto 1',
+        name: 'Project 1',
         type: 'project',
-        description: 'Descripcion del proyecto 1',
+        description: 'Description of project 1',
         technologies: ['React', 'Next.js', 'Tailwind CSS'],
-        url: 'https://github.com/tu-usuario/proyecto1',
+        url: 'https://github.com/your-username/project1',
         imagePath: '/images/proyecto1.png', // PLACEHOLDER
-        content: `# Proyecto 1
+        content: `# Project 1
 
-## Descripcion
-Este es un proyecto ejemplo que muestra [caracteristicas principales].
+## Description
+This is an example project that showcases [main features].
 
-## Tecnologias Utilizadas
+## Technologies Used
 - React
 - Next.js
 - Tailwind CSS
 
-## Caracteristicas
+## Features
 - Feature 1
 - Feature 2
 - Feature 3
 
 ## Demo
-[Enlace al proyecto]
+[Link to project]
 
-## Repositorio
-[Enlace al repositorio]
+## Repository
+[Link to repository]
 `,
       },
       {
         id: 'proyecto2',
-        name: 'Proyecto 2',
+        name: 'Project 2',
         type: 'project',
-        description: 'Descripcion del proyecto 2',
+        description: 'Description of project 2',
         technologies: ['TypeScript', 'Node.js', 'PostgreSQL'],
-        url: 'https://github.com/tu-usuario/proyecto2',
+        url: 'https://github.com/your-username/project2',
         imagePath: '/images/proyecto2.png', // PLACEHOLDER
-        content: `# Proyecto 2
+        content: `# Project 2
 
-## Descripcion
-Este es un proyecto backend que implementa [caracteristicas principales].
+## Description
+This is a backend project that implements [main features].
 
-## Tecnologias Utilizadas
+## Technologies Used
 - TypeScript
 - Node.js
 - PostgreSQL
 
-## Caracteristicas
-- API RESTful
-- Autenticacion JWT
-- Base de datos relacional
+## Features
+- RESTful API
+- JWT Authentication
+- Relational database
 
-## Repositorio
-[Enlace al repositorio]
+## Repository
+[Link to repository]
 `,
       },
       {
         id: 'proyecto3',
-        name: 'Proyecto 3',
+        name: 'Project 3',
         type: 'project',
-        description: 'Descripcion del proyecto 3',
+        description: 'Description of project 3',
         technologies: ['React Native', 'Firebase', 'Redux'],
-        url: 'https://github.com/tu-usuario/proyecto3',
+        url: 'https://github.com/your-username/project3',
         imagePath: '/images/proyecto3.png', // PLACEHOLDER
-        content: `# Proyecto 3
+        content: `# Project 3
 
-## Descripcion
-Aplicacion movil que permite [caracteristicas principales].
+## Description
+Mobile application that allows [main features].
 
-## Tecnologias Utilizadas
+## Technologies Used
 - React Native
 - Firebase
 - Redux
 
-## Caracteristicas
-- Aplicacion multiplataforma
-- Autenticacion con Firebase
-- Estado global con Redux
+## Features
+- Cross-platform application
+- Authentication with Firebase
+- Global state with Redux
 
-## Repositorio
-[Enlace al repositorio]
+## Repository
+[Link to repository]
 `,
       },
     ],
   },
   {
     id: 'gustos',
-    name: 'Gustos',
+    name: 'Hobbies',
     type: 'folder',
     imagePath: '/icons/folder-hobbies.png', // PLACEHOLDER
     children: [
       {
         id: 'musica',
-        name: 'Musica.txt',
+        name: 'Music.txt',
         type: 'text',
-        content: `=== MIS GUSTOS MUSICALES ===
+        content: `=== MY MUSICAL TASTES ===
 
-Generos Favoritos:
-- [Genero 1]
-- [Genero 2]
-- [Genero 3]
+Favorite Genres:
+- [Genre 1]
+- [Genre 2]
+- [Genre 3]
 
-Artistas Favoritos:
-- [Artista 1]
-- [Artista 2]
-- [Artista 3]
+Favorite Artists:
+- [Artist 1]
+- [Artist 2]
+- [Artist 3]
 
-Canciones que me inspiran mientras codifico:
-- [Cancion 1] - [Artista]
-- [Cancion 2] - [Artista]
-- [Cancion 3] - [Artista]
+Songs that inspire me while coding:
+- [Song 1] - [Artist]
+- [Song 2] - [Artist]
+- [Song 3] - [Artist]
 `,
       },
       {
         id: 'hobbies',
         name: 'Hobbies.txt',
         type: 'text',
-        content: `=== MIS HOBBIES ===
+        content: `=== MY HOBBIES ===
 
-Actividades que disfruto:
-- [Hobby 1]: [Descripcion breve]
-- [Hobby 2]: [Descripcion breve]
-- [Hobby 3]: [Descripcion breve]
+Activities I enjoy:
+- [Hobby 1]: [Brief description]
+- [Hobby 2]: [Brief description]
+- [Hobby 3]: [Brief description]
 
-Intereses:
-- [Interes 1]
-- [Interes 2]
-- [Interes 3]
+Interests:
+- [Interest 1]
+- [Interest 2]
+- [Interest 3]
 
-Aprendiendo actualmente:
-- [Tema o habilidad 1]
-- [Tema o habilidad 2]
+Currently learning:
+- [Topic or skill 1]
+- [Topic or skill 2]
 `,
       },
     ],
@@ -314,7 +315,7 @@ export default function Desktop({ onLogout }: DesktopProps) {
       );
     }
 
-    return <div>Tipo de archivo no soportado</div>;
+    return <div>File type not supported</div>;
   };
 
   const closeWindow = (windowId: string) => {
@@ -383,6 +384,9 @@ export default function Desktop({ onLogout }: DesktopProps) {
 
       {/* Menu Bar */}
       <MenuBar onLogout={onLogout} onOpenGear={showAbout} />
+
+      {/* Weather Widget */}
+      <WeatherWidget />
 
       {/* Desktop Icons */}
       <motion.div

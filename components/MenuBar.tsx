@@ -21,25 +21,25 @@ export default function MenuBar({ onLogout, onOpenGear }: MenuBarProps) {
   }, []);
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('es-ES', {
+    return date.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
     });
   };
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('es-ES', {
+    return date.toLocaleDateString('en-US', {
       day: '2-digit',
       month: 'short',
     });
   };
 
-  const systemMenuItems = ['Acerca de Portfolio', 'Mi Equipo', 'Cerrar sesion'];
+  const systemMenuItems = ['About Portfolio', 'My Computer', 'Log Out'];
 
   const menuItems = [
-    { name: 'Archivo', items: ['Nuevo', 'Abrir', 'Cerrar'] },
-    { name: 'Editar', items: ['Deshacer', 'Copiar', 'Pegar'] },
-    { name: 'Ver', items: ['Zoom', 'Pantalla completa'] },
+    { name: 'File', items: ['New', 'Open', 'Close'] },
+    { name: 'Edit', items: ['Undo', 'Copy', 'Paste'] },
+    { name: 'View', items: ['Zoom', 'Full Screen'] },
   ];
 
   const handleMenuClick = (menuName: string) => {
@@ -47,9 +47,9 @@ export default function MenuBar({ onLogout, onOpenGear }: MenuBarProps) {
   };
 
   const handleSystemMenuClick = (itemName: string) => {
-    if (itemName === 'Cerrar sesion') {
+    if (itemName === 'Log Out') {
       onLogout();
-    } else if (itemName === 'Mi Equipo') {
+    } else if (itemName === 'My Computer') {
       onOpenGear();
     }
     setActiveMenu(null);
