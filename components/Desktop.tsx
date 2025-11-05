@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import DesktopIcon from './DesktopIcon';
 import Window from './Window';
@@ -10,6 +10,12 @@ import AboutModal from './AboutModal';
 import WeatherWidget from './WeatherWidget';
 import { FileItem, WindowState } from '@/types';
 import Image from 'next/image';
+
+// Constantes de resolución
+const MIN_WIDTH = 1280;
+const MIN_HEIGHT = 720;
+const REFERENCE_WIDTH = 1920;
+const REFERENCE_HEIGHT = 1080;
 
 // Sistema de archivos del portfolio
 const fileSystem: FileItem[] = [
@@ -231,6 +237,9 @@ export default function Desktop({ onLogout }: DesktopProps) {
   const [windows, setWindows] = useState<WindowState[]>([]);
   const [nextZIndex, setNextZIndex] = useState(100);
   const [showAboutModal, setShowAboutModal] = useState(false);
+  const [screenSize, setScreenSize] = useState({ width: 1920, height: 1080 });
+  const [initialWindowPositions, setInitialWindowPositions] = useState<Map<string, { x: number; y: number }>>(new Map());
+  const [meetsMinResolution, setMeetsMinResolution] = useState(true);
 
   const openFile = (file: FileItem) => {
     // Check if window already exists
@@ -273,7 +282,52 @@ export default function Desktop({ onLogout }: DesktopProps) {
 
     setWindows((prev) => [...prev, newWindow]);
     setNextZIndex((prev) => prev + 1);
+
+    // Guardar posición inicial relativa
+    setInitialWindowPositions((prev) => {
+      const newMap = new Map(prev);
+      newMap.set(file.id, {
+        x: centerX / screenWidth,
+        y: (centerY - 50) / screenHeight,
+      });
+      return newMap;
+    });
   };
+
+  // Detectar tamaño de pantalla inicial y cambios
+  useEffect(() => {
+    const updateScreenSize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setScreenSize({ width, height });
+      setMeetsMinResolution(width >= MIN_WIDTH && height >= MIN_HEIGHT);
+    };
+
+    updateScreenSize();
+    window.addEventListener('resize', updateScreenSize);
+    return () => window.removeEventListener('resize', updateScreenSize);
+  }, []);
+
+  // Reposicionar ventanas cuando cambia el tamaño de la pantalla
+  useEffect(() => {
+    if (!meetsMinResolution) return;
+
+    setWindows((prev) =>
+      prev.map((w) => {
+        const initialPos = initialWindowPositions.get(w.id);
+        if (!initialPos) return w;
+
+        // Calcular nueva posición basada en la proporción de la pantalla
+        const newX = initialPos.x * screenSize.width;
+        const newY = initialPos.y * screenSize.height;
+
+        return {
+          ...w,
+          position: { x: newX, y: newY },
+        };
+      })
+    );
+  }, [screenSize, meetsMinResolution, initialWindowPositions]);
 
   const renderFileContent = (file: FileItem): React.ReactNode => {
     if (file.type === 'folder' && file.children) {
@@ -369,6 +423,23 @@ export default function Desktop({ onLogout }: DesktopProps) {
     setShowAboutModal(true);
   };
 
+  // Pantalla de resolución mínima
+  if (!meetsMinResolution) {
+    return (
+      <div className="h-screen w-screen bg-white flex items-center justify-center">
+        <div className="text-center p-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">Resolución no compatible</h1>
+          <p className="text-gray-600 text-lg mb-2">
+            Esta aplicación requiere una resolución mínima de {MIN_WIDTH}x{MIN_HEIGHT}
+          </p>
+          <p className="text-gray-500">
+            Resolución actual: {screenSize.width}x{screenSize.height}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="h-screen w-screen relative overflow-hidden"
@@ -386,7 +457,7 @@ export default function Desktop({ onLogout }: DesktopProps) {
       <MenuBar onLogout={onLogout} onOpenGear={showAbout} />
 
       {/* Weather Widget */}
-      <WeatherWidget />
+      <WeatherWidget screenWidth={screenSize.width} screenHeight={screenSize.height} />
 
       {/* Desktop Icons */}
       <motion.div

@@ -1,8 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Cloud, CloudRain, Sun, CloudSnow } from 'lucide-react';
+
+// Resolución de referencia (1920x1080)
+const REFERENCE_WIDTH = 1920;
+const REFERENCE_HEIGHT = 1080;
 
 interface WeatherData {
   current: {
@@ -17,6 +21,11 @@ interface WeatherData {
   };
 }
 
+interface WeatherWidgetProps {
+  screenWidth: number;
+  screenHeight: number;
+}
+
 const getWeatherIcon = (code: number, size = 24) => {
   const props = { size, strokeWidth: 1.5 };
   if (code === 0) return <Sun {...props} />;
@@ -27,9 +36,43 @@ const getWeatherIcon = (code: number, size = 24) => {
   return <Cloud {...props} />;
 };
 
-export default function WeatherWidget() {
+export default function WeatherWidget({ screenWidth, screenHeight }: WeatherWidgetProps) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Calcular factor de escala basado en la resolución actual vs referencia
+  const scale = useMemo(() => {
+    const scaleX = screenWidth / REFERENCE_WIDTH;
+    const scaleY = screenHeight / REFERENCE_HEIGHT;
+    // Usar el menor de los dos para mantener proporciones
+    return Math.min(scaleX, scaleY);
+  }, [screenWidth, screenHeight]);
+
+  // Tamaños escalados
+  const scaledSizes = useMemo(() => {
+    return {
+      width: 450 * scale,
+      mainIconSize: 40 * scale,
+      dayIconSize: 24 * scale,
+      padding: 6 * scale,
+      borderRadius: 30 * scale,
+      topOffset: 56, // Mantener distancia fija desde arriba (no escalar)
+      rightOffset: 24, // Mantener distancia fija desde la derecha (no escalar)
+      fontSize: {
+        cityName: 20 * scale,
+        temperature: 60 * scale,
+        degree: 30 * scale,
+        dayName: 12 * scale,
+        high: 14 * scale,
+        low: 12 * scale,
+      },
+      spacing: {
+        gap: 2 * scale,
+        headerBottom: 3 * scale,
+        dailyPadding: 4 * scale,
+      },
+    };
+  }, [scale]);
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -52,9 +95,25 @@ export default function WeatherWidget() {
 
   if (loading) {
     return (
-      <div className="absolute top-14 right-6 z-50">
-        <div className="rounded-3xl shadow-2xl backdrop-blur-2xl border border-white/30 p-6" style={{ width: '450px', background: 'rgba(255, 255, 255, 0.2)' }}>
-          <span className="text-gray-700">Loading weather...</span>
+      <div
+        className="absolute z-50"
+        style={{
+          top: `${scaledSizes.topOffset}px`,
+          right: `${scaledSizes.rightOffset}px`,
+        }}
+      >
+        <div
+          className="shadow-2xl backdrop-blur-2xl border border-white/30"
+          style={{
+            width: `${scaledSizes.width}px`,
+            padding: `${scaledSizes.padding}px`,
+            borderRadius: `${scaledSizes.borderRadius}px`,
+            background: 'rgba(255, 255, 255, 0.2)',
+          }}
+        >
+          <span className="text-gray-700" style={{ fontSize: `${scaledSizes.fontSize.dayName}px` }}>
+            Loading weather...
+          </span>
         </div>
       </div>
     );
@@ -84,47 +143,64 @@ export default function WeatherWidget() {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="absolute top-14 right-6 z-50"
+      className="absolute z-50"
+      style={{
+        top: `${scaledSizes.topOffset}px`,
+        right: `${scaledSizes.rightOffset}px`,
+      }}
     >
       <div
-        className="rounded-3xl shadow-2xl backdrop-blur-2xl border border-white/30"
+        className="shadow-2xl backdrop-blur-2xl border border-white/30"
         style={{
-          width: '450px',
+          width: `${scaledSizes.width}px`,
+          borderRadius: `${scaledSizes.borderRadius}px`,
           background: 'rgba(255, 255, 255, 0.2)',
         }}
       >
         {/* Header */}
-        <div className="px-6 pt-4 pb-3 border-b border-gray-600/30">
-          <div className="flex items-center justify-between mb-0.5">
-            <span className="text-gray-700 text-xl font-bold">Los Angeles</span>
+        <div
+          className="border-b border-gray-600/30"
+          style={{
+            padding: `${scaledSizes.padding * 4}px ${scaledSizes.padding * 6}px ${scaledSizes.spacing.headerBottom}px`,
+          }}
+        >
+          <div className="flex items-center justify-between" style={{ marginBottom: `${0.5 * scale}px` }}>
+            <span className="text-gray-700 font-bold" style={{ fontSize: `${scaledSizes.fontSize.cityName}px` }}>
+              Los Angeles
+            </span>
             <div className="text-gray-700">
-              {getWeatherIcon(weather.current.weathercode, 40)}
+              {getWeatherIcon(weather.current.weathercode, scaledSizes.mainIconSize)}
             </div>
           </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-gray-700 text-6xl font-extralight tracking-tight">
+          <div className="flex items-baseline" style={{ gap: `${1 * scale}px` }}>
+            <span
+              className="text-gray-700 font-extralight tracking-tight"
+              style={{ fontSize: `${scaledSizes.fontSize.temperature}px` }}
+            >
               {currentTemp}
             </span>
-            <span className="text-gray-700 text-3xl font-light">°</span>
+            <span className="text-gray-700 font-light" style={{ fontSize: `${scaledSizes.fontSize.degree}px` }}>
+              °
+            </span>
           </div>
         </div>
 
         {/* Daily forecast */}
-        <div className="px-6 py-4">
-          <div className="grid grid-cols-7 gap-2">
+        <div style={{ padding: `${scaledSizes.spacing.dailyPadding * 4}px ${scaledSizes.padding * 6}px` }}>
+          <div className="grid grid-cols-7" style={{ gap: `${scaledSizes.spacing.gap}px` }}>
             {days.map((day, i) => (
-              <div key={i} className="flex flex-col items-center gap-2">
-                <span className="text-gray-700 text-xs font-bold">
+              <div key={i} className="flex flex-col items-center" style={{ gap: `${scaledSizes.spacing.gap}px` }}>
+                <span className="text-gray-700 font-bold" style={{ fontSize: `${scaledSizes.fontSize.dayName}px` }}>
                   {day.day}
                 </span>
                 <div className="text-gray-700">
-                  {getWeatherIcon(day.code, 24)}
+                  {getWeatherIcon(day.code, scaledSizes.dayIconSize)}
                 </div>
                 <div className="flex flex-col items-center">
-                  <span className="text-gray-700 text-sm font-bold">
+                  <span className="text-gray-700 font-bold" style={{ fontSize: `${scaledSizes.fontSize.high}px` }}>
                     {day.high}°
                   </span>
-                  <span className="text-gray-600 text-xs font-semibold">
+                  <span className="text-gray-600 font-semibold" style={{ fontSize: `${scaledSizes.fontSize.low}px` }}>
                     {day.low}°
                   </span>
                 </div>
@@ -135,8 +211,9 @@ export default function WeatherWidget() {
 
         {/* Glossy effect */}
         <div
-          className="absolute inset-0 rounded-3xl pointer-events-none"
+          className="absolute inset-0 pointer-events-none"
           style={{
+            borderRadius: `${scaledSizes.borderRadius}px`,
             background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 50%)',
           }}
         />
