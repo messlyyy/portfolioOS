@@ -24,30 +24,16 @@ const fileSystem: FileItem[] = [
     name: 'Settings',
     type: 'text',
     imagePath: '/icons/settings.png',
-    content: `=== SETTINGS ===
-
-System Settings
-
-This is a placeholder for system settings.
-
-PREFERENCES:
-- Appearance
-- Notifications
-- Privacy
-- Accounts
-- Updates
-
-Coming soon...
-`,
+    content: 'soon...',
   },
   {
     id: 'readme',
     name: 'readme.txt',
     type: 'text',
     imagePath: '/icons/txt.png',
-    content: `=== README ===
+    content: `readme.txt
 
-Welcome to my Portfolio OS!
+Welcome to my Portfolio (OS)!
 
 This is an interactive portfolio designed as an operating system.
 
@@ -55,16 +41,11 @@ HOW TO NAVIGATE:
 - Double click on icons to open files and folders
 - Drag windows to move them
 - Use the buttons in the top bar to close, minimize or maximize
-- Check the Projects folder to see my work
-- Look at the Hobbies folder to get to know me better
-- Open my CV for professional information
+- Check the Projects folder to see my work (empty 😭)
+- Look at the Hobbies folder to get to know me better (working on it...)
+- Open my CV for professional information (hehe, it's empty too)
 
-CONTACT:
-- Email: [your@email.com]
-- LinkedIn: [Your LinkedIn]
-- GitHub: [Your GitHub]
 
-Thanks for visiting!
 `,
   },
   {
@@ -72,57 +53,16 @@ Thanks for visiting!
     name: 'Browser',
     type: 'text',
     imagePath: '/icons/browser.png',
-    content: `=== BROWSER ===
-
-Welcome to the Portfolio Browser!
-
-This is a placeholder for a web browser application.
-
-FEATURES:
-- Browse the web
-- Manage bookmarks
-- Incognito mode
-- Extensions support
-
-Coming soon...
-`,
+    content: 'soon...',
   },
   {
     id: 'cv',
     name: 'CV.pdf',
     type: 'text',
     imagePath: '/icons/cv.png',
-    content: `=== CURRICULUM VITAE ===
+    content: `cv.pdf
 
-Name: [Your Name]
-Email: [your@email.com]
-Phone: [Your Phone]
-LinkedIn: [Your LinkedIn]
-GitHub: [Your GitHub]
-
-=== PROFESSIONAL SUMMARY ===
-[Brief description of your professional profile]
-
-=== EXPERIENCE ===
-[Company 1] - [Position] (Date - Date)
-- [Achievement or responsibility 1]
-- [Achievement or responsibility 2]
-
-[Company 2] - [Position] (Date - Date)
-- [Achievement or responsibility 1]
-- [Achievement or responsibility 2]
-
-=== EDUCATION ===
-[University/Institution] - [Degree] (Year)
-
-=== SKILLS ===
-- Languages: JavaScript, TypeScript, Python, etc.
-- Frameworks: React, Next.js, Node.js, etc.
-- Tools: Git, Docker, AWS, etc.
-
-=== LANGUAGES ===
-- Spanish: Native
-- English: [Level]
+hai
 `,
   },
   {
@@ -130,20 +70,7 @@ GitHub: [Your GitHub]
     name: 'Terminal',
     type: 'text',
     imagePath: '/icons/terminal.png',
-    content: `=== TERMINAL ===
-
-Command Line Interface
-
-This is a placeholder for a terminal application.
-
-FEATURES:
-- Execute commands
-- Run scripts
-- System administration
-- Development tools
-
-Coming soon...
-`,
+    content: 'soon...',
   },
   {
     id: 'proyectos',
@@ -159,27 +86,7 @@ Coming soon...
         technologies: ['React', 'Next.js', 'Tailwind CSS'],
         url: 'https://github.com/your-username/project1',
         imagePath: '/images/proyecto1.png', // PLACEHOLDER
-        content: `# Project 1
-
-## Description
-This is an example project that showcases [main features].
-
-## Technologies Used
-- React
-- Next.js
-- Tailwind CSS
-
-## Features
-- Feature 1
-- Feature 2
-- Feature 3
-
-## Demo
-[Link to project]
-
-## Repository
-[Link to repository]
-`,
+        content: 'soon...',
       },
       {
         id: 'proyecto2',
@@ -189,24 +96,7 @@ This is an example project that showcases [main features].
         technologies: ['TypeScript', 'Node.js', 'PostgreSQL'],
         url: 'https://github.com/your-username/project2',
         imagePath: '/images/proyecto2.png', // PLACEHOLDER
-        content: `# Project 2
-
-## Description
-This is a backend project that implements [main features].
-
-## Technologies Used
-- TypeScript
-- Node.js
-- PostgreSQL
-
-## Features
-- RESTful API
-- JWT Authentication
-- Relational database
-
-## Repository
-[Link to repository]
-`,
+        content: 'soon...',
       },
       {
         id: 'proyecto3',
@@ -216,24 +106,7 @@ This is a backend project that implements [main features].
         technologies: ['React Native', 'Firebase', 'Redux'],
         url: 'https://github.com/your-username/project3',
         imagePath: '/images/proyecto3.png', // PLACEHOLDER
-        content: `# Project 3
-
-## Description
-Mobile application that allows [main features].
-
-## Technologies Used
-- React Native
-- Firebase
-- Redux
-
-## Features
-- Cross-platform application
-- Authentication with Firebase
-- Global state with Redux
-
-## Repository
-[Link to repository]
-`,
+        content: 'soon...',
       },
     ],
   },
@@ -242,20 +115,7 @@ Mobile application that allows [main features].
     name: 'Gallery',
     type: 'text',
     imagePath: '/icons/gallery.png',
-    content: `=== GALLERY ===
-
-Photo Gallery Application
-
-This is a placeholder for a photo gallery.
-
-FEATURES:
-- View photos
-- Organize albums
-- Edit images
-- Share with friends
-
-Coming soon...
-`,
+    content: 'soon...',
   },
   {
     id: 'gustos',
@@ -268,45 +128,14 @@ Coming soon...
         name: 'Music.txt',
         type: 'text',
         imagePath: '/icons/music.png',
-        content: `=== MY MUSICAL TASTES ===
-
-Favorite Genres:
-- [Genre 1]
-- [Genre 2]
-- [Genre 3]
-
-Favorite Artists:
-- [Artist 1]
-- [Artist 2]
-- [Artist 3]
-
-Songs that inspire me while coding:
-- [Song 1] - [Artist]
-- [Song 2] - [Artist]
-- [Song 3] - [Artist]
-`,
+        content: 'soon...',
       },
       {
         id: 'hobbies',
         name: 'Hobbies.txt',
         type: 'text',
         imagePath: '/icons/hobbies.png',
-        content: `=== MY HOBBIES ===
-
-Activities I enjoy:
-- [Hobby 1]: [Brief description]
-- [Hobby 2]: [Brief description]
-- [Hobby 3]: [Brief description]
-
-Interests:
-- [Interest 1]
-- [Interest 2]
-- [Interest 3]
-
-Currently learning:
-- [Topic or skill 1]
-- [Topic or skill 2]
-`,
+        content: 'soon...',
       },
     ],
   },
@@ -449,6 +278,15 @@ export default function Desktop({ onLogout }: DesktopProps) {
     }
 
     if (file.type === 'text' || file.type === 'project') {
+      // Si el contenido es "soon...", mostrar pantalla en blanco centrada
+      if (file.content === 'soon...') {
+        return (
+          <div className="w-full h-full flex items-center justify-center bg-white">
+            <p className="text-gray-400 text-2xl font-light">soon...</p>
+          </div>
+        );
+      }
+
       return (
         <div className="max-w-none">
           <pre className="whitespace-pre-wrap text-sm text-gray-700 font-mono bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { mochibop } from "./fonts";
+import { mochibop, jetbrainsMono, firaCode } from "./fonts";
 
 export const metadata: Metadata = {
   title: "messly",
@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${mochibop.variable} antialiased`}>
+      <body className={`${mochibop.variable} ${jetbrainsMono.variable} ${firaCode.variable} antialiased`}>
         {children}
       </body>
     </html>

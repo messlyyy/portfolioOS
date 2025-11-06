@@ -1,4 +1,5 @@
 import localFont from 'next/font/local';
+import { JetBrains_Mono, Fira_Code } from 'next/font/google';
 
 export const mochibop = localFont({
   src: [
@@ -14,4 +15,16 @@ export const mochibop = localFont({
     },
   ],
   variable: '--font-mochibop',
+});
+
+export const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
+  display: 'swap',
+});
+
+export const firaCode = Fira_Code({
+  subsets: ['latin'],
+  variable: '--font-fira-code',
+  display: 'swap',
 });

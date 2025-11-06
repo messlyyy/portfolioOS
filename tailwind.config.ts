@@ -13,7 +13,7 @@ const config: Config = {
         foreground: "var(--foreground)",
       },
       fontFamily: {
-        mono: ['var(--font-mono)', 'monospace'],
+        mono: ['var(--font-jetbrains-mono)', 'var(--font-fira-code)', 'Consolas', 'Monaco', 'monospace'],
       },
     },
   },
