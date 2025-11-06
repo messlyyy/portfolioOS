@@ -3,7 +3,7 @@ import "./globals.css";
 import { mochibop } from "./fonts";
 
 export const metadata: Metadata = {
-  title: "Portfolio OS",
+  title: "messly",
   description: "Sistema Operativo Portfolio - Experiencia interactiva de portafolio",
   icons: {
     icon: '/favicon/favicon.png',

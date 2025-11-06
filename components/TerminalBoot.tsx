@@ -1,96 +1,93 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 interface TerminalBootProps {
   onComplete: () => void;
 }
 
-const bootMessages = [
-  'Portfolio OS v1.0.0',
-  'Starting system...',
-  '',
-  'Loading kernel modules...',
-  '[OK] CPU initialized',
-  '[OK] RAM: 16GB available',
-  '[OK] File system mounted',
-  '[OK] Network drivers loaded',
-  '[OK] Graphics interface started',
-  '',
-  'Preparing user experience...',
-  '[OK] UI components loaded',
-  '[OK] Animations enabled',
-  '[OK] Window system ready',
-  '',
-  'System started successfully.',
-  'Press any key to continue...',
-];
-
 export default function TerminalBoot({ onComplete }: TerminalBootProps) {
-  const [displayedLines, setDisplayedLines] = useState<string[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [displayedText, setDisplayedText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
 
+  const speedMultiplier = 0.5;
+
+  const steps = [
+    { text: 'SYSTEM', delay: 100, isHeader: true },
+    { text: 'Welcome to messly.xyz terminal [Version 1.0.0]', delay: 30, isHeader: false },
+    { text: '', delay: 500, isHeader: false },
+    { text: 'COMMAND', delay: 100, isHeader: true },
+    { text: '$ initialize messly.xyz', delay: 50, isHeader: false },
+    { text: '', delay: 300, isHeader: false },
+    { text: 'OUTPUT', delay: 100, isHeader: true },
+    { text: 'Initializing messly.xyz..............Done', delay: 40, isHeader: false },
+    { text: 'Loading core modules..............Done', delay: 40, isHeader: false },
+    { text: 'Establishing secure connection....Done', delay: 40, isHeader: false },
+    { text: 'Verifying integrity...............Done', delay: 40, isHeader: false },
+    { text: '', delay: 500, isHeader: false },
+    { text: 'SYSTEM', delay: 100, isHeader: true },
+    { text: 'messly.xyz initialized successfully.', delay: 30, isHeader: false },
+  ].map((step) => ({ ...step, delay: step.delay * speedMultiplier }));
+
   useEffect(() => {
-    // Cursor blink effect
-    const cursorInterval = setInterval(() => {
-      setShowCursor(prev => !prev);
-    }, 500);
-
-    return () => clearInterval(cursorInterval);
-  }, []);
-
-  useEffect(() => {
-    if (currentIndex < bootMessages.length) {
-      const delay = bootMessages[currentIndex] === '' ? 100 : Math.random() * 100 + 50;
-      const timer = setTimeout(() => {
-        setDisplayedLines(prev => [...prev, bootMessages[currentIndex]]);
-        setCurrentIndex(prev => prev + 1);
-      }, delay);
-
-      return () => clearTimeout(timer);
+    if (currentStep >= steps.length) {
+      setTimeout(onComplete, 800 * speedMultiplier);
+      return;
     }
-  }, [currentIndex]);
 
-  useEffect(() => {
-    const handleKeyPress = () => {
-      if (currentIndex >= bootMessages.length) {
-        onComplete();
+    const step = steps[currentStep];
+    let currentIndex = 0;
+
+    const typeInterval = setInterval(() => {
+      if (currentIndex <= step.text.length) {
+        setDisplayedText(step.text.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(typeInterval);
+        setTimeout(() => {
+          setCurrentStep((prev) => prev + 1);
+          setDisplayedText('');
+        }, 200 * speedMultiplier);
       }
-    };
+    }, step.delay);
 
-    window.addEventListener('keypress', handleKeyPress);
-    window.addEventListener('click', handleKeyPress);
-
-    return () => {
-      window.removeEventListener('keypress', handleKeyPress);
-      window.removeEventListener('click', handleKeyPress);
-    };
-  }, [currentIndex, onComplete]);
+    return () => clearInterval(typeInterval);
+  }, [currentStep, onComplete]);
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 p-8 overflow-auto font-mono flex items-center justify-center">
-      <div className="max-w-2xl w-full bg-white/60 backdrop-blur-md rounded-3xl p-8 shadow-lg border border-pink-200">
-        <div className="space-y-2">
-          {displayedLines.map((line, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2 }}
-              className="text-sm text-purple-600 font-medium"
-            >
-              {line && <span className="text-pink-400 mr-2">♡</span>}
-              {line}
-            </motion.div>
-          ))}
-          {currentIndex < bootMessages.length && (
-            <div className="inline-block">
-              {showCursor && <span className="text-purple-400 animate-pulse">✦</span>}
-            </div>
-          )}
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-white px-6">
+      <div className="w-full max-w-3xl space-y-2 font-mono">
+        {steps.slice(0, currentStep).map((step, index) => (
+          <div
+            key={index}
+            className={`${
+              step.isHeader
+                ? 'text-gray-500 text-sm mt-4 font-bold'
+                : step.text.startsWith('$')
+                ? 'text-pink-500 font-semibold'
+                : 'text-gray-800'
+            }`}
+          >
+            {step.text}
+          </div>
+        ))}
+        {currentStep < steps.length && (
+          <div
+            className={`${
+              steps[currentStep].isHeader
+                ? 'text-gray-500 text-sm mt-4 font-bold'
+                : steps[currentStep].text.startsWith('$')
+                ? 'text-pink-500 font-semibold'
+                : 'text-gray-800'
+            }`}
+          >
+            {displayedText}
+            {showCursor && (
+              <span className="inline-block w-2 h-4 bg-pink-500 ml-1 animate-pulse" />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
