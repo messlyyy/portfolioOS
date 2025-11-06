@@ -8,7 +8,8 @@
       "Bash(npm run dev:*)",
       "Bash(del \"C:\\Users\\av6ct\\OneDrive\\Documentos\\portfolioOS\\components\\WeatherWidget.tsx\")",
       "Bash(del \"C:\\Users\\av6ct\\OneDrive\\Documentos\\portfolioOS\\public\\cursors\\default.svg\" \"C:\\Users\\av6ct\\OneDrive\\Documentos\\portfolioOS\\public\\cursors\\pointer.svg\" \"C:\\Users\\av6ct\\OneDrive\\Documentos\\portfolioOS\\public\\cursors\\text.svg\")",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

@@ -5,6 +5,9 @@ import { mochibop } from "./fonts";
 export const metadata: Metadata = {
   title: "Portfolio OS",
   description: "Sistema Operativo Portfolio - Experiencia interactiva de portafolio",
+  icons: {
+    icon: '/favicon/favicon.png',
+  },
 };
 
 export default function RootLayout({

@@ -44,7 +44,7 @@ Coming soon...
     id: 'readme',
     name: 'readme.txt',
     type: 'text',
-    imagePath: '/images/txt.png',
+    imagePath: '/icons/txt.png',
     content: `=== README ===
 
 Welcome to my Portfolio OS!
@@ -91,7 +91,7 @@ Coming soon...
     id: 'cv',
     name: 'CV.pdf',
     type: 'text',
-    imagePath: '/images/cv.png',
+    imagePath: '/icons/cv.png',
     content: `=== CURRICULUM VITAE ===
 
 Name: [Your Name]
