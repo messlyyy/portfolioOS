@@ -20,6 +20,27 @@ const REFERENCE_HEIGHT = 1080;
 // Sistema de archivos del portfolio
 const fileSystem: FileItem[] = [
   {
+    id: 'settings',
+    name: 'Settings',
+    type: 'text',
+    imagePath: '/icons/settings.png',
+    content: `=== SETTINGS ===
+
+System Settings
+
+This is a placeholder for system settings.
+
+PREFERENCES:
+- Appearance
+- Notifications
+- Privacy
+- Accounts
+- Updates
+
+Coming soon...
+`,
+  },
+  {
     id: 'readme',
     name: 'readme.txt',
     type: 'text',
@@ -44,6 +65,26 @@ CONTACT:
 - GitHub: [Your GitHub]
 
 Thanks for visiting!
+`,
+  },
+  {
+    id: 'browser',
+    name: 'Browser',
+    type: 'text',
+    imagePath: '/icons/browser.png',
+    content: `=== BROWSER ===
+
+Welcome to the Portfolio Browser!
+
+This is a placeholder for a web browser application.
+
+FEATURES:
+- Browse the web
+- Manage bookmarks
+- Incognito mode
+- Extensions support
+
+Coming soon...
 `,
   },
   {
@@ -82,6 +123,26 @@ GitHub: [Your GitHub]
 === LANGUAGES ===
 - Spanish: Native
 - English: [Level]
+`,
+  },
+  {
+    id: 'terminal',
+    name: 'Terminal',
+    type: 'text',
+    imagePath: '/icons/terminal.png',
+    content: `=== TERMINAL ===
+
+Command Line Interface
+
+This is a placeholder for a terminal application.
+
+FEATURES:
+- Execute commands
+- Run scripts
+- System administration
+- Development tools
+
+Coming soon...
 `,
   },
   {
@@ -177,6 +238,26 @@ Mobile application that allows [main features].
     ],
   },
   {
+    id: 'gallery',
+    name: 'Gallery',
+    type: 'text',
+    imagePath: '/icons/gallery.png',
+    content: `=== GALLERY ===
+
+Photo Gallery Application
+
+This is a placeholder for a photo gallery.
+
+FEATURES:
+- View photos
+- Organize albums
+- Edit images
+- Share with friends
+
+Coming soon...
+`,
+  },
+  {
     id: 'gustos',
     name: 'Hobbies',
     type: 'folder',
@@ -186,6 +267,7 @@ Mobile application that allows [main features].
         id: 'musica',
         name: 'Music.txt',
         type: 'text',
+        imagePath: '/icons/music.png',
         content: `=== MY MUSICAL TASTES ===
 
 Favorite Genres:
@@ -208,6 +290,7 @@ Songs that inspire me while coding:
         id: 'hobbies',
         name: 'Hobbies.txt',
         type: 'text',
+        imagePath: '/icons/hobbies.png',
         content: `=== MY HOBBIES ===
 
 Activities I enjoy:
@@ -242,18 +325,24 @@ export default function Desktop({ onLogout }: DesktopProps) {
   const [meetsMinResolution, setMeetsMinResolution] = useState(true);
 
   const openFile = (file: FileItem) => {
+    // Get the highest zIndex from all existing windows
+    const maxExistingZIndex = windows.length > 0
+      ? Math.max(...windows.map(w => w.zIndex))
+      : 99;
+
     // Check if window already exists
     const existingWindow = windows.find((w) => w.id === file.id);
     if (existingWindow) {
-      // Bring to front and restore if minimized
+      // Bring to front and restore if minimized with highest zIndex
+      const topZIndex = Math.max(maxExistingZIndex + 1, nextZIndex);
       setWindows((prev) =>
         prev.map((w) =>
           w.id === file.id
-            ? { ...w, isMinimized: false, zIndex: nextZIndex }
+            ? { ...w, isMinimized: false, zIndex: topZIndex }
             : w
         )
       );
-      setNextZIndex((prev) => prev + 1);
+      setNextZIndex(topZIndex + 1);
       return;
     }
 
@@ -264,6 +353,10 @@ export default function Desktop({ onLogout }: DesktopProps) {
     const screenHeight = typeof globalThis.window !== 'undefined' ? globalThis.window.innerHeight : 900;
     const centerX = (screenWidth - windowWidth) / 2;
     const centerY = (screenHeight - windowHeight) / 2;
+
+    // Ensure new window always has the highest zIndex
+    const newZIndex = Math.max(maxExistingZIndex + 1, nextZIndex);
+    setNextZIndex(newZIndex + 1);
 
     const newWindow: WindowState = {
       id: file.id,
@@ -276,12 +369,11 @@ export default function Desktop({ onLogout }: DesktopProps) {
         y: centerY - 50, // Slightly higher to account for dock
       },
       size: { width: windowWidth, height: windowHeight },
-      zIndex: nextZIndex,
+      zIndex: newZIndex,
       imagePath: file.imagePath,
     };
 
     setWindows((prev) => [...prev, newWindow]);
-    setNextZIndex((prev) => prev + 1);
 
     // Guardar posición inicial relativa
     setInitialWindowPositions((prev) => {
@@ -291,6 +383,18 @@ export default function Desktop({ onLogout }: DesktopProps) {
         y: (centerY - 50) / screenHeight,
       });
       return newMap;
+    });
+
+    // Force focus on the new window after a microtask to ensure it's on top
+    Promise.resolve().then(() => {
+      setWindows((prev) =>
+        prev.map((w) =>
+          w.id === file.id
+            ? { ...w, zIndex: Math.max(...prev.map(win => win.zIndex)) + 1 }
+            : w
+        )
+      );
+      setNextZIndex((prev) => Math.max(prev, Math.max(...windows.map(w => w.zIndex), newZIndex)) + 2);
     });
   };
 
@@ -327,12 +431,16 @@ export default function Desktop({ onLogout }: DesktopProps) {
         };
       })
     );
-  }, [screenSize, meetsMinResolution, initialWindowPositions]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screenSize, meetsMinResolution]);
 
   const renderFileContent = (file: FileItem): React.ReactNode => {
     if (file.type === 'folder' && file.children) {
       return (
-        <div className="grid grid-cols-3 gap-4 p-4">
+        <div
+          className="grid grid-cols-3 gap-4 p-4"
+          onMouseDown={(e) => e.stopPropagation()}
+        >
           {file.children.map((child) => (
             <DesktopIcon key={child.id} file={child} onDoubleClick={openFile} />
           ))}
@@ -423,17 +531,17 @@ export default function Desktop({ onLogout }: DesktopProps) {
     setShowAboutModal(true);
   };
 
-  // Pantalla de resolución mínima
+  // Minimum resolution screen
   if (!meetsMinResolution) {
     return (
       <div className="h-screen w-screen bg-white flex items-center justify-center">
         <div className="text-center p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">Resolución no compatible</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">Unsupported Resolution</h1>
           <p className="text-gray-600 text-lg mb-2">
-            Esta aplicación requiere una resolución mínima de {MIN_WIDTH}x{MIN_HEIGHT}
+            This application requires a minimum resolution of {MIN_WIDTH}x{MIN_HEIGHT}
           </p>
           <p className="text-gray-500">
-            Resolución actual: {screenSize.width}x{screenSize.height}
+            Current resolution: {screenSize.width}x{screenSize.height}
           </p>
         </div>
       </div>
@@ -464,7 +572,7 @@ export default function Desktop({ onLogout }: DesktopProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="absolute top-12 left-4 grid grid-cols-1 gap-2 z-10"
+        className="absolute top-12 left-4 grid grid-cols-2 grid-rows-4 gap-2 z-10"
       >
         {fileSystem.map((file) => (
           <DesktopIcon key={file.id} file={file} onDoubleClick={openFile} />

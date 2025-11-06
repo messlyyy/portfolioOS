@@ -22,14 +22,14 @@ export default function Taskbar({ windows, onWindowClick }: TaskbarProps) {
   }, []);
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('es-ES', {
+    return date.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
     });
   };
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('es-ES', {
+    return date.toLocaleDateString('en-US', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
@@ -74,7 +74,7 @@ export default function Taskbar({ windows, onWindowClick }: TaskbarProps) {
                 alt={window.title}
                 className="w-10 h-10 object-contain"
               />
-            ) : window.title.includes('Proyectos') || window.title.includes('Gustos') ? (
+            ) : window.title.includes('Projects') || window.title.includes('Hobbies') ? (
               <Folder size={30} className="text-blue-500" />
             ) : (
               <FileText size={30} className="text-blue-600" />
@@ -97,7 +97,7 @@ export default function Taskbar({ windows, onWindowClick }: TaskbarProps) {
             {formatTime(currentTime)}
           </div>
           <div className="text-gray-600 text-[9px] font-medium text-center">
-            {currentTime.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
+            {currentTime.toLocaleDateString('en-US', { day: '2-digit', month: 'short' })}
           </div>
         </motion.div>
       </motion.div>

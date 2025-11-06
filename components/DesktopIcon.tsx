@@ -45,10 +45,16 @@ export default function DesktopIcon({ file, onDoubleClick }: DesktopIconProps) {
     }
   };
 
-  const handleDoubleClick = () => {
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event from bubbling up to parent window
+    e.preventDefault(); // Prevent default behavior
     if (!isDragging) {
       onDoubleClick(file);
     }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent focusing parent window
   };
 
   return (
@@ -70,6 +76,7 @@ export default function DesktopIcon({ file, onDoubleClick }: DesktopIconProps) {
       }}
       whileHover={{ scale: 1.08 }}
       onDoubleClick={handleDoubleClick}
+      onMouseDown={handleMouseDown}
       className="flex flex-col items-center justify-center p-4 cursor-grab active:cursor-grabbing w-32 group select-none"
     >
       <div className="mb-2">{getIcon()}</div>

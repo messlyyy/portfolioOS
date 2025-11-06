@@ -4,6 +4,10 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { User } from 'lucide-react';
 
+// Constantes de resolución
+const MIN_WIDTH = 1280;
+const MIN_HEIGHT = 720;
+
 interface LoginScreenProps {
   onLogin: () => void;
 }
@@ -12,7 +16,23 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
   const [isTyping, setIsTyping] = useState(false);
   const [password, setPassword] = useState('');
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [screenSize, setScreenSize] = useState({ width: 1920, height: 1080 });
+  const [meetsMinResolution, setMeetsMinResolution] = useState(true);
   const targetPassword = '********';
+
+  // Detectar tamaño de pantalla
+  useEffect(() => {
+    const updateScreenSize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setScreenSize({ width, height });
+      setMeetsMinResolution(width >= MIN_WIDTH && height >= MIN_HEIGHT);
+    };
+
+    updateScreenSize();
+    window.addEventListener('resize', updateScreenSize);
+    return () => window.removeEventListener('resize', updateScreenSize);
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -42,19 +62,36 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
   };
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('es-ES', {
+    return date.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
     });
   };
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('es-ES', {
+    return date.toLocaleDateString('en-US', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
     });
   };
+
+  // Minimum resolution screen
+  if (!meetsMinResolution) {
+    return (
+      <div className="h-screen w-screen bg-white flex items-center justify-center">
+        <div className="text-center p-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">Unsupported Resolution</h1>
+          <p className="text-gray-600 text-lg mb-2">
+            This application requires a minimum resolution of {MIN_WIDTH}x{MIN_HEIGHT}
+          </p>
+          <p className="text-gray-500">
+            Current resolution: {screenSize.width}x{screenSize.height}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -105,7 +142,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
           className="text-center"
         >
           <h2 className="text-2xl font-bold text-white drop-shadow-lg" style={{ fontFamily: 'var(--font-mochibop)' }}>
-            Visitante
+            Guest
           </h2>
         </motion.div>
 
@@ -121,7 +158,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               type="password"
               value={password}
               readOnly
-              placeholder={isTyping ? '' : 'Click para continuar'}
+              placeholder={isTyping ? '' : 'Click to continue'}
               className="w-full px-6 py-3 bg-white/30 backdrop-blur-xl border-2 border-white/50 rounded-full text-white placeholder-white/70 text-center focus:outline-none focus:ring-2 focus:ring-white/60 transition-all font-medium shadow-xl"
               style={{ fontFamily: 'var(--font-mochibop)' }}
             />
@@ -143,7 +180,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
             className="text-sm text-white/90 text-center font-semibold drop-shadow-lg"
             style={{ fontFamily: 'var(--font-mochibop)' }}
           >
-            Autenticando...
+            Authenticating...
           </motion.p>
         )}
       </div>

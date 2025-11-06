@@ -44,7 +44,7 @@ export default function AboutModal({ onClose }: AboutModalProps) {
 
           {/* Title */}
           <h2 className="text-3xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'var(--font-mochibop)' }}>
-            Mi Equipo
+            My Setup
           </h2>
 
           {/* Two Column Layout */}
@@ -58,15 +58,15 @@ export default function AboutModal({ onClose }: AboutModalProps) {
 
               <div className="space-y-0.5 text-sm">
                 <div className="flex justify-between">
-                  <div className="text-gray-600">Procesador</div>
+                  <div className="text-gray-600">Processor</div>
                   <div className="text-gray-800 font-medium">M1</div>
                 </div>
                 <div className="flex justify-between">
-                  <div className="text-gray-600">Memoria</div>
+                  <div className="text-gray-600">Memory</div>
                   <div className="text-gray-800 font-medium">8GB</div>
                 </div>
                 <div className="flex justify-between">
-                  <div className="text-gray-600">Almacenamiento</div>
+                  <div className="text-gray-600">Storage</div>
                   <div className="text-gray-800 font-medium">256GB SSD</div>
                 </div>
               </div>
@@ -81,7 +81,7 @@ export default function AboutModal({ onClose }: AboutModalProps) {
 
               <div className="space-y-0.5 text-sm">
                 <div className="flex justify-between">
-                  <div className="text-gray-600">Procesador</div>
+                  <div className="text-gray-600">Processor</div>
                   <div className="text-gray-800 font-medium">Ryzen 7 5800X</div>
                 </div>
                 <div className="flex justify-between">
@@ -89,19 +89,19 @@ export default function AboutModal({ onClose }: AboutModalProps) {
                   <div className="text-gray-800 font-medium">RTX 3060</div>
                 </div>
                 <div className="flex justify-between">
-                  <div className="text-gray-600">Placa Base</div>
+                  <div className="text-gray-600">Motherboard</div>
                   <div className="text-gray-800 font-medium">B450M PRO-M2</div>
                 </div>
                 <div className="flex justify-between">
-                  <div className="text-gray-600">Refrigeracion</div>
+                  <div className="text-gray-600">Cooling</div>
                   <div className="text-gray-800 font-medium">DeepCool LE520</div>
                 </div>
                 <div className="flex justify-between">
-                  <div className="text-gray-600">Memoria</div>
+                  <div className="text-gray-600">Memory</div>
                   <div className="text-gray-800 font-medium">16GB DDR4</div>
                 </div>
                 <div className="flex justify-between">
-                  <div className="text-gray-600">Almacenamiento</div>
+                  <div className="text-gray-600">Storage</div>
                   <div className="text-gray-800 font-medium">1TB SSD</div>
                 </div>
                 <div className="flex justify-between">

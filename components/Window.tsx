@@ -28,6 +28,14 @@ export default function Window({
   const [isResizing, setIsResizing] = useState(false);
   const [resizeDirection, setResizeDirection] = useState('');
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [resizeStart, setResizeStart] = useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    windowX: 0,
+    windowY: 0
+  });
   const dragRef = useRef<HTMLDivElement>(null);
 
   if (window.isMinimized) return null;
@@ -58,6 +66,14 @@ export default function Window({
     setIsDragging(false); // Ensure dragging is disabled
     setIsResizing(true);
     setResizeDirection(direction);
+    setResizeStart({
+      x: e.clientX,
+      y: e.clientY,
+      width: window.size.width,
+      height: window.size.height,
+      windowX: window.position.x,
+      windowY: window.position.y
+    });
   };
 
   const handleResizeMove = useCallback((e: MouseEvent) => {
@@ -72,40 +88,43 @@ export default function Window({
     const maxWidth = Math.min(1200, screenWidth * 0.85);
     const maxHeight = Math.min(750, screenHeight * 0.75);
 
-    const deltaX = e.movementX;
-    const deltaY = e.movementY;
+    // Calculate delta from initial position
+    const deltaX = e.clientX - resizeStart.x;
+    const deltaY = e.clientY - resizeStart.y;
 
-    let newWidth = window.size.width;
-    let newHeight = window.size.height;
-    let newX = window.position.x;
-    let newY = window.position.y;
+    let newWidth = resizeStart.width;
+    let newHeight = resizeStart.height;
+    let newX = resizeStart.windowX;
+    let newY = resizeStart.windowY;
 
     if (resizeDirection.includes('e')) {
-      newWidth = Math.max(minWidth, Math.min(maxWidth, window.size.width + deltaX));
+      newWidth = Math.max(minWidth, Math.min(maxWidth, resizeStart.width + deltaX));
     }
     if (resizeDirection.includes('w')) {
-      const proposedWidth = window.size.width - deltaX;
-      if (proposedWidth >= minWidth && proposedWidth <= maxWidth) {
-        newWidth = proposedWidth;
-        newX = window.position.x + deltaX;
-      }
+      const proposedWidth = resizeStart.width - deltaX;
+      // Clamp the width first
+      newWidth = Math.max(minWidth, Math.min(maxWidth, proposedWidth));
+      // Only update X if we actually changed the width
+      const actualWidthChange = resizeStart.width - newWidth;
+      newX = resizeStart.windowX + actualWidthChange;
     }
     if (resizeDirection.includes('s')) {
-      newHeight = Math.max(minHeight, Math.min(maxHeight, window.size.height + deltaY));
+      newHeight = Math.max(minHeight, Math.min(maxHeight, resizeStart.height + deltaY));
     }
     if (resizeDirection.includes('n')) {
-      const proposedHeight = window.size.height - deltaY;
-      if (proposedHeight >= minHeight && proposedHeight <= maxHeight) {
-        newHeight = proposedHeight;
-        newY = window.position.y + deltaY;
-      }
+      const proposedHeight = resizeStart.height - deltaY;
+      // Clamp the height first
+      newHeight = Math.max(minHeight, Math.min(maxHeight, proposedHeight));
+      // Only update Y if we actually changed the height
+      const actualHeightChange = resizeStart.height - newHeight;
+      newY = resizeStart.windowY + actualHeightChange;
     }
 
     onUpdateSize({ width: newWidth, height: newHeight });
-    if (newX !== window.position.x || newY !== window.position.y) {
+    if (newX !== resizeStart.windowX || newY !== resizeStart.windowY) {
       onUpdatePosition({ x: newX, y: newY });
     }
-  }, [isResizing, window.isMaximized, isDragging, window.size, window.position, resizeDirection, onUpdateSize, onUpdatePosition]);
+  }, [isResizing, window.isMaximized, isDragging, resizeStart, resizeDirection, onUpdateSize, onUpdatePosition]);
 
   const handleResizeEnd = useCallback(() => {
     setIsResizing(false);
@@ -143,7 +162,6 @@ export default function Window({
 
   return (
     <motion.div
-      onMouseDown={onFocus}
       className={`absolute bg-white/95 backdrop-blur-2xl rounded-xl shadow-2xl overflow-hidden border border-gray-200/50 ${isResizing || isDragging ? 'select-none' : ''}`}
       style={{
         ...windowStyle,
@@ -159,7 +177,10 @@ export default function Window({
       {/* Title Bar */}
       <div
         ref={dragRef}
-        onMouseDown={handleDragStart}
+        onMouseDown={(e) => {
+          handleDragStart(e);
+          onFocus();
+        }}
         className="bg-gray-50/90 backdrop-blur-xl px-4 py-3 flex items-center justify-between cursor-move select-none border-b border-gray-200/50"
       >
         <div className="flex items-center gap-2">
